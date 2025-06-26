@@ -3,16 +3,16 @@ import os
 from rag_chatbot import RAGChatbot
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# Page configuration
+# Streamlit Cloud Configuration
 st.set_page_config(
     page_title="Stanford ETL Chatbot",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Load environment variables
+load_dotenv()
 
 # Custom CSS for better styling
 st.markdown("""
@@ -47,7 +47,8 @@ st.markdown("""
 
 def initialize_chatbot():
     """Initialize the RAG chatbot."""
-    transcripts_dir = "/Users/xuehui/Library/Mobile Documents/com~apple~CloudDocs/Stanford ETL/Transcripts"
+    # For production, you might want to use environment variables for the path
+    transcripts_dir = os.getenv("TRANSCRIPTS_DIR", "/Users/xuehui/Library/Mobile Documents/com~apple~CloudDocs/Stanford ETL/Transcripts")
     
     if not os.path.exists(transcripts_dir):
         st.error(f"Transcripts directory not found: {transcripts_dir}")
