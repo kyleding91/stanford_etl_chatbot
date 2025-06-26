@@ -1,187 +1,164 @@
 # 🎓 Stanford ETL RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot that answers questions about entrepreneurship, leadership, and innovation based on Stanford ETL (Entrepreneurship Through Leadership) transcripts.
+A Retrieval-Augmented Generation (RAG) chatbot that answers questions based on Stanford ETL (Entrepreneurship Through Leadership) transcripts using OpenAI's GPT models.
 
-## Features
+## 🚀 Features
 
-- **RAG-powered responses**: Uses vector search to find relevant transcript content and generates contextual responses
-- **Comprehensive knowledge base**: Access to hundreds of Stanford ETL transcripts featuring successful entrepreneurs, investors, and business leaders
-- **Multiple interfaces**: Web interface (Streamlit) and command-line interface
-- **Smart text chunking**: Intelligent document segmentation for better retrieval
-- **Persistent vector store**: Uses ChromaDB for efficient storage and retrieval
-- **Source attribution**: Cites specific transcript sources in responses
+- **RAG-powered responses** based on 495+ Stanford ETL transcripts
+- **Vector search** using ChromaDB and sentence transformers
+- **Web interface** with Streamlit
+- **Command-line interface** for quick queries
+- **Production-ready** with Docker support
+- **Multiple deployment options** (Streamlit Cloud, Docker, VPS)
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Python 3.8 or higher
-- OpenAI API key
-- Access to Stanford ETL transcripts directory
+- Python 3.8+
+- OpenAI API key with sufficient quota
+- Stanford ETL transcript files (495+ .txt files)
 
-## Installation
+## 🛠️ Installation
 
-1. **Clone the repository**:
+1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd stanford_etl_chatbot
+   git clone https://github.com/yourusername/stanford-etl-chatbot.git
+   cd stanford-etl-chatbot
    ```
 
-2. **Install dependencies**:
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**:
-   Create a `.env` file in the project root:
+3. **Set up environment variables:**
    ```bash
    cp env_example.txt .env
-   ```
-   
-   Edit the `.env` file and add your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_openai_api_key_here
+   # Edit .env with your OpenAI API key and transcripts directory
    ```
 
-## Usage
+4. **Set up the vector database:**
+   ```bash
+   python setup_deployment.py
+   ```
+
+## 🎯 Usage
 
 ### Web Interface (Recommended)
-
-1. **Start the Streamlit app**:
-   ```bash
-   streamlit run streamlit_app.py
-   ```
-
-2. **Open your browser** and navigate to the provided URL (usually `http://localhost:8501`)
-
-3. **Setup the vector store**:
-   - Click "Setup Vector Store" in the sidebar to process your transcripts
-   - Wait for the setup to complete
-
-4. **Start chatting**:
-   - Ask questions about entrepreneurship, leadership, or innovation
-   - View the context used for each response by expanding "View Context Used"
+```bash
+streamlit run streamlit_app.py
+```
 
 ### Command Line Interface
-
-1. **Run the CLI chatbot**:
-   ```bash
-   python cli_chatbot.py
-   ```
-
-2. **Available commands**:
-   - `/help` - Show help information
-   - `/stats` - Show transcript and vector store statistics
-   - `/setup` - Setup the vector store with transcripts
-   - `/rebuild` - Rebuild the vector store (clears existing data)
-   - `/search` - Search transcripts without generating a response
-   - `/quit` - Exit the application
-   - `/clear` - Clear the screen
-
-3. **Start chatting**:
-   - Type your questions directly
-   - Choose whether to view the context used for each response
-
-## Example Questions
-
-Here are some example questions you can ask:
-
-- What advice do successful entrepreneurs give about starting a company?
-- How do venture capitalists evaluate startup investments?
-- What are the key lessons from failed startups?
-- How do successful founders build and lead teams?
-- What role does innovation play in entrepreneurship?
-- How do entrepreneurs handle failure and setbacks?
-- What are the most important qualities of a successful entrepreneur?
-- How do startups achieve product-market fit?
-- What are the biggest challenges in scaling a startup?
-- How do successful entrepreneurs balance work and life?
-
-## Project Structure
-
-```
-stanford_etl_chatbot/
-├── transcript_loader.py      # Load and process transcript files
-├── vector_store.py          # Vector storage and retrieval with ChromaDB
-├── rag_chatbot.py           # Main RAG chatbot implementation
-├── streamlit_app.py         # Web interface using Streamlit
-├── cli_chatbot.py           # Command-line interface
-├── requirements.txt         # Python dependencies
-├── env_example.txt          # Example environment variables
-└── README.md               # This file
+```bash
+python cli_chatbot.py
 ```
 
-## How It Works
+### Test the System
+```bash
+python test_chatbot.py
+```
 
-1. **Document Processing**: Transcript files are loaded and chunked into smaller, overlapping segments
-2. **Vector Embedding**: Each chunk is converted into a vector representation using sentence transformers
-3. **Storage**: Vectors are stored in ChromaDB for efficient retrieval
-4. **Retrieval**: When a question is asked, the system finds the most relevant chunks using vector similarity
-5. **Generation**: The relevant context is sent to OpenAI's API along with the question to generate a response
-6. **Response**: The system returns an answer based on the transcript content
+## 📁 Project Structure
 
-## Configuration
+```
+stanford-etl-chatbot/
+├── rag_chatbot.py          # Main RAG chatbot logic
+├── transcript_loader.py    # Transcript loading and processing
+├── vector_store.py         # Vector database operations
+├── streamlit_app.py        # Web interface
+├── cli_chatbot.py          # Command-line interface
+├── test_chatbot.py         # Test script
+├── setup_deployment.py     # Deployment setup script
+├── requirements.txt        # Python dependencies
+├── Dockerfile              # Docker configuration
+├── .streamlit/             # Streamlit configuration
+├── deployment_guide.md     # Detailed deployment instructions
+└── chroma_db/              # Vector database (generated, not in Git)
+```
+
+## 🌐 Deployment
+
+### Quick Start: Streamlit Cloud
+1. Push your code to GitHub (excluding `chroma_db/`)
+2. Go to [Streamlit Cloud](https://share.streamlit.io/)
+3. Connect your repository
+4. Set main file: `streamlit_app.py`
+5. Add environment variables in Streamlit Cloud settings
+
+### Docker Deployment
+```bash
+# Build and run locally
+docker build -t stanford-etl-chatbot .
+docker run -p 8501:8501 -e OPENAI_API_KEY=your_key stanford-etl-chatbot
+
+# Deploy to cloud providers (see deployment_guide.md)
+```
+
+### VPS/Server Deployment
+See `deployment_guide.md` for detailed instructions on:
+- DigitalOcean Droplet setup
+- AWS EC2 configuration
+- Nginx reverse proxy
+- Systemd service management
+
+## 🔧 Configuration
 
 ### Environment Variables
-
 - `OPENAI_API_KEY`: Your OpenAI API key (required)
-- `OPENAI_MODEL`: OpenAI model to use (default: `gpt-4-turbo-preview`)
-- `EMBEDDING_MODEL`: Embedding model for vector creation (default: `text-embedding-ada-002`)
+- `OPENAI_MODEL`: Model to use (default: `gpt-4o`)
+- `TRANSCRIPTS_DIR`: Path to transcript files
 
-### Customization
+### Vector Database
+- The vector database (`chroma_db/`) is **not included in Git** due to size (231MB)
+- It will be automatically generated when you run `setup_deployment.py`
+- For deployment, the database will be rebuilt on the server
 
-You can customize various aspects of the chatbot:
+## 📊 Performance
 
-- **Chunk size**: Modify the `chunk_size` parameter in `vector_store.py`
-- **Number of context chunks**: Adjust the `n_context_results` parameter
-- **System prompt**: Edit the `system_prompt` in `rag_chatbot.py`
-- **Model parameters**: Change temperature, max tokens, etc. in the OpenAI API calls
+- **495 transcripts** processed
+- **23,300+ vector chunks** created
+- **Fast semantic search** with ChromaDB
+- **Context-aware responses** using RAG
 
-## Troubleshooting
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Troubleshooting
 
 ### Common Issues
 
-1. **"OPENAI_API_KEY not found"**:
-   - Make sure you've created a `.env` file with your API key
-   - Verify the API key is valid and has sufficient credits
+1. **"Vector store not found"**
+   - Run `python setup_deployment.py` to create the vector database
 
-2. **"Transcripts directory not found"**:
-   - Update the `transcripts_dir` path in the code to match your setup
-   - Ensure the directory contains `.txt` files
+2. **"OpenAI API quota exceeded"**
+   - Check your OpenAI account billing and quota
 
-3. **Vector store setup fails**:
-   - Check that all transcript files are readable
-   - Ensure sufficient disk space for the vector database
-   - Try rebuilding the vector store with `/rebuild` command
+3. **"Transcripts directory not found"**
+   - Update the `TRANSCRIPTS_DIR` path in your `.env` file
 
-4. **Slow responses**:
-   - Reduce the number of context chunks retrieved
-   - Use a faster OpenAI model (e.g., `gpt-3.5-turbo`)
-   - Consider upgrading your OpenAI API plan
+4. **Large file size when pushing to GitHub**
+   - The `chroma_db/` folder is excluded from Git
+   - Run `git rm -r --cached chroma_db/` if already committed
 
-### Performance Tips
+### Getting Help
 
-- The first run will be slower as it processes all transcripts
-- Subsequent runs will be faster as the vector store is already built
-- Use the CLI for faster interaction if you prefer terminal-based interfaces
-- Adjust chunk size and overlap for optimal performance vs. accuracy trade-off
+- Check the `deployment_guide.md` for detailed deployment instructions
+- Review the test script output for system diagnostics
+- Ensure all dependencies are installed correctly
 
-## Contributing
+## 🎯 Example Questions
 
-Feel free to contribute to this project by:
-
-1. Reporting bugs or issues
-2. Suggesting new features
-3. Improving documentation
-4. Optimizing performance
-5. Adding new transcript sources
-
-## License
-
-This project is for educational purposes. Please respect the intellectual property of the Stanford ETL transcripts.
-
-## Acknowledgments
-
-- Stanford ETL for providing the valuable transcript content
-- OpenAI for the GPT models and API
-- ChromaDB for vector storage
-- Streamlit for the web interface framework
-- The open-source community for the various libraries used 
+- "What advice do successful entrepreneurs give about starting a company?"
+- "How do venture capitalists evaluate startup investments?"
+- "What are the key lessons from failed startups?"
+- "How do successful founders build and lead teams?"
+- "What role does innovation play in entrepreneurship?" 
