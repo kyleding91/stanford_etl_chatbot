@@ -29,7 +29,7 @@ class RAGChatbot:
             raise ValueError("OPENAI_API_KEY environment variable is required")
         
         self.client = OpenAI(api_key=api_key)
-        self.model = os.getenv("OPENAI_MODEL", "gpt-4-turbo-preview")
+        self.model = os.getenv("OPENAI_MODEL", "gpt-4o")
         
         # System prompt for the chatbot
         self.system_prompt = """You are a helpful assistant that answers questions based on Stanford ETL (Entrepreneurship Through Leadership) transcripts. 
@@ -175,3 +175,4 @@ Always base your responses on the provided context from the transcripts."""
             List of relevant chunks
         """
         return self.vector_store.search(query, n_results) 
+    

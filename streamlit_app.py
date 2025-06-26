@@ -47,11 +47,13 @@ st.markdown("""
 
 def initialize_chatbot():
     """Initialize the RAG chatbot."""
-    # For production, you might want to use environment variables for the path
-    transcripts_dir = os.getenv("TRANSCRIPTS_DIR", "/Users/xuehui/Library/Mobile Documents/com~apple~CloudDocs/Stanford ETL/Transcripts")
+    # Use environment variable for transcripts directory, with fallback for local development
+    transcripts_dir = os.getenv("TRANSCRIPTS_DIR", "./transcripts")
     
     if not os.path.exists(transcripts_dir):
         st.error(f"Transcripts directory not found: {transcripts_dir}")
+        st.info("Please ensure the transcripts directory exists and contains .txt files")
+        st.info("For deployment, set the TRANSCRIPTS_DIR environment variable")
         return None
     
     try:
@@ -76,12 +78,24 @@ def main():
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
             st.error("⚠️ OPENAI_API_KEY not found in environment variables")
-            st.info("Please set your OpenAI API key in a .env file")
+            st.info("Please set your OpenAI API key in Streamlit Cloud secrets or .env file")
+            st.markdown("""
+            **For Streamlit Cloud:**
+            1. Go to your app settings
+            2. Add secrets with your OpenAI API key
+            3. Redeploy the app
+            """)
             return
         
         # Initialize chatbot
         chatbot = initialize_chatbot()
         if not chatbot:
+            st.markdown("""
+            **To fix this:**
+            1. Upload your transcript files to the server
+            2. Set the TRANSCRIPTS_DIR environment variable
+            3. Or use the setup script: `python setup_deployment.py`
+            """)
             return
         
         # Vector store setup
