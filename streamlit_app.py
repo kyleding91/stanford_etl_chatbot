@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from rag_chatbot import RAGChatbot
+from rag_chatbot_fallback import RAGChatbotFallback
 from dotenv import load_dotenv
 
 # Streamlit Cloud Configuration
@@ -57,7 +57,7 @@ def initialize_chatbot():
         return None
     
     try:
-        chatbot = RAGChatbot(transcripts_dir)
+        chatbot = RAGChatbotFallback(transcripts_dir)
         return chatbot
     except Exception as e:
         st.error(f"Error initializing chatbot: {str(e)}")
